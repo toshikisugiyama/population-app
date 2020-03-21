@@ -1,3 +1,24 @@
+# 都道府県別の総人口推移グラフを表示するSPA
+
+## 環境
+
+- node v12.16.1
+- react v16.13.1
+- typescript v3.7.2
+
+## 要件
+- RESAS(地域経済分析システム) APIの「都道府県一覧」からAPIを取得する
+- APIレスポンスから都道府県一覧のチェックボックスを動的に生成する
+- 都道府県にチェックを入れると、RESAS APIから選択された都道府県の「人口構成」を取得する
+- 人口構成APIレスポンスから、X軸:年、Y軸:人口数の折れ線グラフを動的に生成して表示する
+- 都道府県一覧および総人口情報はRESAS APIのデータを用いる
+- グラフは Highcharts や Rechart.js サードパーティ製のグラフライブラリを用いて描画する
+- グラフライブラリは任意のものを用いる
+- Google Chrome最新版で正しく動く
+
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
