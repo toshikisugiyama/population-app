@@ -1,8 +1,14 @@
 import React from 'react'
-
-function Graph() {
+interface responses {
+	prefCode: number,
+	prefName: string,
+	isSelected: boolean
+}
+function Graph({prefectures}: {prefectures: Array<responses>}) {
 	return (
-		<div>Graph</div>
+		<div>
+			{prefectures.map((item: responses) => item.prefCode)}
+		</div>
 	)
 }
 

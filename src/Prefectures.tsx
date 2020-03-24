@@ -18,7 +18,7 @@ function Prefectures({prefectures, selectPref}: {prefectures: Array<responses>, 
 		<div className="prefecture">
 			<h2 className="prefecture-title">都道府県リスト</h2>
 			<ul className="prefecture-list">
-				{prefectures.map((item) => {
+				{prefectures.map((item: responses) => {
 					return (
 						<li className="prefecture-list-item" key={item.prefCode}>
 							<label>

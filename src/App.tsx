@@ -31,10 +31,23 @@ function App() {
 		fetchPrefecture()
 		// eslint-disable-next-line
 	}, [])
-
+	const [selectedPref, setSelectedPref] = useState<Array<responses>>([])
 	const selectPref = (event: Array<responses>) => {
 		setPrefectures(event)
-		console.log(prefectures)
+		const selectedPref = prefectures.filter((item: responses) => item.isSelected)
+		setSelectedPref(selectedPref)
+		const compositionConfig = {headers: {
+			'Content-Type': 'application/json',
+			'x-api-key': process.env.REACT_APP_RESAS_API_KEY
+		}}
+		const compositionUrl: string = `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1`
+		const fetchComposition = async () => {
+			await axios.get(compositionUrl, compositionConfig).then(response => {
+				const compositionList = response.data.result.data[0].data
+				console.log(compositionList)
+			})
+		}
+		fetchComposition()
 	}
 
   return (
@@ -47,7 +60,9 @@ function App() {
 					prefectures={prefectures}
 					selectPref={(event: Array<responses>) => selectPref(event)}
 				/>
-				<Graph />
+				<Graph
+					prefectures={selectedPref}
+				/>
 			</main>
     </div>
   )
