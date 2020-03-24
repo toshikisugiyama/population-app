@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './Prefectures.scss'
-import axios from 'axios'
-
 interface responses {
 	prefCode: number,
-	prefName: string
+	prefName: string,
+	isSelected: boolean
 }
-
-function Prefectures() {
-	const config = {headers: {
-		'Content-Type': 'application/json',
-		'x-api-key': process.env.REACT_APP_RESAS_API_KEY
-	}}
-	const prefectures_url: string = 'https://opendata.resas-portal.go.jp/api/v1/prefectures'
-	const [prefectures, setPrefectures] = useState([])
-	useEffect(() => {
-		const fetchPrefecture = async () => {
-			await axios.get(prefectures_url, config).then(response => {
-				const p = response.data.result.map((item: responses) => item.prefName)
-				setPrefectures(p)
-			})
+function Prefectures({prefectures, selectPref}: {prefectures: Array<responses>, selectPref: any}) {
+	const togglePref = (event: any) => {
+		const target = event.target
+		const clickedTarget = prefectures.find((item: responses) => item.prefName === target.id)
+		if (clickedTarget) {
+			clickedTarget.isSelected = !clickedTarget.isSelected
 		}
-		fetchPrefecture()
-		// eslint-disable-next-line
-	}, [])
+		selectPref(prefectures)
+	}
 	return (
 		<div className="prefecture">
 			<h2 className="prefecture-title">都道府県リスト</h2>
 			<ul className="prefecture-list">
-				{prefectures.map((prefName) => {
+				{prefectures.map((item) => {
 					return (
-						<li className="prefecture-list-item" key={prefName}>
-							<input type="checkbox" id={prefName}/>
-							<label htmlFor={prefName}>{prefName}</label>
+						<li className="prefecture-list-item" key={item.prefCode}>
+							<label>
+								<input type="checkbox" id={item.prefName} onChange={togglePref}/>
+								{item.prefName}
+							</label>
 						</li>
 					)
 				})}
