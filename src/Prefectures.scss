@@ -11,8 +11,8 @@
 		flex-wrap: wrap;
 		&-item {
 			margin-right: 10px;
-			& > input,
-			& > label {
+			& input,
+			& label {
 				cursor: pointer;
 				user-select: none;
 			}
