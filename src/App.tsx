@@ -12,7 +12,7 @@ function App() {
 		prefName: string,
 		isSelected: boolean
 	}
-	const prefConfig = {headers: {
+	const resasConfig = {headers: {
 		'Content-Type': 'application/json',
 		'x-api-key': process.env.REACT_APP_RESAS_API_KEY
 	}}
@@ -20,7 +20,7 @@ function App() {
 	const [prefectures, setPrefectures] = useState<Array<responses>>([])
 	useEffect(() => {
 		const fetchPrefecture = async () => {
-			await axios.get(prefUrl, prefConfig).then(response => {
+			await axios.get(prefUrl, resasConfig).then(response => {
 				const prefList: Array<responses> = response.data.result.map((item: responses) => item)
 				prefList.forEach((item: responses) => {
 					item.isSelected = false
@@ -36,13 +36,9 @@ function App() {
 		setPrefectures(event)
 		const selectedPref = prefectures.filter((item: responses) => item.isSelected)
 		setSelectedPref(selectedPref)
-		const compositionConfig = {headers: {
-			'Content-Type': 'application/json',
-			'x-api-key': process.env.REACT_APP_RESAS_API_KEY
-		}}
 		const compositionUrl: string = `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1`
 		const fetchComposition = async () => {
-			await axios.get(compositionUrl, compositionConfig).then(response => {
+			await axios.get(compositionUrl, resasConfig).then(response => {
 				const compositionList = response.data.result.data[0].data
 				console.log(compositionList)
 			})
