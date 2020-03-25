@@ -4,20 +4,38 @@ import Prefectures from './Prefectures'
 import Graph from './Graph'
 import axios from 'axios'
 
+interface responses {
+	prefCode: number,
+	prefName: string,
+	isSelected: boolean
+}
+interface composition {
+	prefCode: number,
+	label: string,
+	data: Array<data>
+}
+interface data {
+	year: number,
+	value: number
+}
+interface compositionUrl {
+	prefCode: number,
+	url: string
+}
+
 function App() {
 
-	// 都道府県名取得
-	interface responses {
-		prefCode: number,
-		prefName: string,
-		isSelected: boolean
-	}
+	const [prefectures, setPrefectures] = useState<Array<responses>>([])
+	const [selectedPref, setSelectedPref] = useState<Array<responses>>([])
+	const [compositions, setCompositions] = useState<Array<composition>>([])
 	const resasConfig = {headers: {
 		'Content-Type': 'application/json',
 		'x-api-key': process.env.REACT_APP_RESAS_API_KEY
 	}}
 	const prefUrl: string = 'https://opendata.resas-portal.go.jp/api/v1/prefectures'
-	const [prefectures, setPrefectures] = useState<Array<responses>>([])
+
+	const compositionLists: Array<composition> = []
+
 	useEffect(() => {
 		const fetchPrefecture = async () => {
 			await axios.get(prefUrl, resasConfig).then(response => {
@@ -31,17 +49,29 @@ function App() {
 		fetchPrefecture()
 		// eslint-disable-next-line
 	}, [])
-	const [selectedPref, setSelectedPref] = useState<Array<responses>>([])
+
 	const selectPref = (event: Array<responses>) => {
 		setPrefectures(event)
-		const selectedPref = prefectures.filter((item: responses) => item.isSelected)
+
+		const selectedPref: Array<responses> = prefectures.filter((item: responses) => item.isSelected)
 		setSelectedPref(selectedPref)
-		const compositionUrl: string = `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1`
+
 		const fetchComposition = async () => {
-			await axios.get(compositionUrl, resasConfig).then(response => {
-				const compositionList = response.data.result.data[0].data
-				console.log(compositionList)
+			const selectedPrefCodes: Array<number> = selectedPref.map((item: responses): number => item.prefCode)
+			const compositionUrls: Array<compositionUrl> = selectedPrefCodes.map((item: number) => {
+				return {
+					prefCode: item,
+					url: `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${item}`
+				}
 			})
+
+			for (let item of compositionUrls) {
+				await axios.get(item.url, resasConfig).then(response => {
+					compositionLists.push(response.data.result.data[0])
+					compositionLists[compositionLists.length - 1].prefCode = item.prefCode
+				})
+			}
+			setCompositions(compositionLists)
 		}
 		fetchComposition()
 	}
@@ -58,6 +88,7 @@ function App() {
 				/>
 				<Graph
 					prefectures={selectedPref}
+					compositions={compositions}
 				/>
 			</main>
     </div>
