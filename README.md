@@ -1,7 +1,6 @@
 # 都道府県別の総人口推移グラフを表示するSPA
 
-> Netlifyで公開しています
-
+> Netlifyで公開しています  
 > https://population-app.netlify.com
 
 ## 環境
