@@ -26,8 +26,8 @@ interface series {
 const years: Array<string> = []
 function Graph({prefectures, compositions}: {prefectures: Array<responses>, compositions: Array<composition>}) {
 	const series: Array<series> | any = compositions.map((composition) => {
-		const values = composition.data.map((item) => item.value)
-		const prefName = prefectures.find((item) => item.prefCode === composition.prefCode)?.prefName
+		const values = composition.data.map((data) => data.value)
+		const prefName = prefectures.find((response) => response.prefCode === composition.prefCode)?.prefName
 		return {
 			type: 'line',
 			name: prefName,
@@ -55,8 +55,21 @@ function Graph({prefectures, compositions}: {prefectures: Array<responses>, comp
     title: {
 			text: '都道府県別人口推移'
 		},
+		chart: {
+			animation: {
+				duration: 800
+			}
+		},
+		yAxis: {
+			title: {
+				text: '人口(人)'
+			}
+		},
 		xAxis: {
-			categories: years
+			categories: years,
+			title: {
+				text: '年度(年度)'
+			}
 		},
     series: series
 	}
