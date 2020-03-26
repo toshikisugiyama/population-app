@@ -23,25 +23,17 @@ interface series {
 	data: Array<number>
 }
 
-let label: string = ''
 const years: Array<string> = []
-let series: Array<series> | any = []
-
 function Graph({prefectures, compositions}: {prefectures: Array<responses>, compositions: Array<composition>}) {
-	const populationValues: Array<Array<number>> = []
-	const compositionDatas = compositions.map((item: composition) => item.data)
-	compositionDatas.forEach(element => {
-		const populationValue = element.map((item) => item.value)
-		populationValues.push(populationValue)
-	})
-	series = populationValues.map((item) => {
+	const series: Array<series> | any = compositions.map((composition) => {
+		const values = composition.data.map((item) => item.value)
+		const prefName = prefectures.find((item) => item.prefCode === composition.prefCode)?.prefName
 		return {
 			type: 'line',
-			name: 'a',
-			data: item
+			name: prefName,
+			data: values
 		}
 	})
-
 	useEffect(() => {
 		const resasConfig = {headers: {
 			'Content-Type': 'application/json',
@@ -50,7 +42,6 @@ function Graph({prefectures, compositions}: {prefectures: Array<responses>, comp
 		const url: string = 'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1'
 		const fetchYears = async () => {
 			await axios.get(url, resasConfig).then(response => {
-				label = response.data.result.data[0].label
 				const yearArrays = response.data.result.data[0].data.map((item: data) => String(item.year))
 				yearArrays.forEach((element: string) => {
 					years.push(element)
@@ -62,7 +53,7 @@ function Graph({prefectures, compositions}: {prefectures: Array<responses>, comp
 
 	const options: Highcharts.Options = {
     title: {
-			text: label
+			text: '都道府県別人口推移'
 		},
 		xAxis: {
 			categories: years
