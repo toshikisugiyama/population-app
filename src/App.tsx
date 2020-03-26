@@ -79,7 +79,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="App-header-title">Title</h1>
+        <h1 className="App-header-title">都道府県別人口推移</h1>
       </header>
 			<main className="App-main">
 				<Prefectures

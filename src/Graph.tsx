@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import './Graph.scss'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import axios from 'axios'
