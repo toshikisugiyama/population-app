@@ -26,54 +26,50 @@ interface compositionUrl {
 function App() {
 
 	const [prefectures, setPrefectures] = useState<Array<responses>>([])
-	const [selectedPref, setSelectedPref] = useState<Array<responses>>([])
 	const [compositions, setCompositions] = useState<Array<composition>>([])
 	const resasConfig = {headers: {
 		'Content-Type': 'application/json',
 		'x-api-key': process.env.REACT_APP_RESAS_API_KEY
 	}}
 	const prefUrl: string = 'https://opendata.resas-portal.go.jp/api/v1/prefectures'
-
-	const compositionLists: Array<composition> = []
+	const fetchPrefecture = async () => {
+		await axios.get(prefUrl, resasConfig).then(response => {
+			const prefList: Array<responses> = response.data.result.map((item: responses) => {
+				return {
+					prefCode: item.prefCode,
+					prefName: item.prefName,
+					isSelected: false
+				}
+			})
+			setPrefectures(prefList)
+		})
+	}
 
 	useEffect(() => {
-		const fetchPrefecture = async () => {
-			await axios.get(prefUrl, resasConfig).then(response => {
-				const prefList: Array<responses> = response.data.result.map((item: responses) => item)
-				prefList.forEach((item: responses) => {
-					item.isSelected = false
-				});
-				setPrefectures(prefList)
-			})
-		}
 		fetchPrefecture()
 		// eslint-disable-next-line
 	}, [])
 
-	const selectPref = (event: Array<responses>) => {
+	const selectPref = async (event: Array<responses>) => {
 		setPrefectures(event)
 
 		const selectedPref: Array<responses> = prefectures.filter((item: responses) => item.isSelected)
-		setSelectedPref(selectedPref)
 
-		const fetchComposition = async () => {
-			const selectedPrefCodes: Array<number> = selectedPref.map((item: responses): number => item.prefCode)
-			const compositionUrls: Array<compositionUrl> = selectedPrefCodes.map((item: number) => {
-				return {
-					prefCode: item,
-					url: `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${item}`
-				}
-			})
-
-			for (let item of compositionUrls) {
-				await axios.get(item.url, resasConfig).then(response => {
-					compositionLists.push(response.data.result.data[0])
-					compositionLists[compositionLists.length - 1].prefCode = item.prefCode
-				})
+		const compositionUrls: Array<compositionUrl> = selectedPref.map((item: responses) => {
+			return {
+				prefCode: item.prefCode,
+				url: `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${item.prefCode}`
 			}
-			setCompositions(compositionLists)
+		})
+
+		const compositionLists: Array<composition> = []
+		for (let compositionUrl of compositionUrls) {
+			await axios.get(compositionUrl.url, resasConfig).then(response => {
+				compositionLists.push(response.data.result.data[0])
+				compositionLists[compositionLists.length - 1].prefCode = compositionUrl.prefCode
+			})
 		}
-		fetchComposition()
+		setCompositions(compositionLists)
 	}
 
   return (
@@ -84,10 +80,12 @@ function App() {
 			<main className="App-main">
 				<Prefectures
 					prefectures={prefectures}
-					selectPref={(event: Array<responses>) => selectPref(event)}
+					selectPref={selectPref}
+					setPrefectures={setPrefectures}
+					setCompositions={setCompositions}
 				/>
 				<Graph
-					prefectures={selectedPref}
+					prefectures={prefectures}
 					compositions={compositions}
 				/>
 			</main>
