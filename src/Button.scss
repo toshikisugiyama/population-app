@@ -1,7 +1,13 @@
 button {
 	cursor: pointer;
 	color: #fff;
-	width: 8vmax;
+	width: 10vmax;
+	max-width: 100px;
+	transition: opacity .6s;
+	opacity: 0.6;
+}
+button:hover {
+	opacity: 1;
 }
 button.all {
 	background-color: rgb(4, 4, 90);
