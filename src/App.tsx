@@ -23,8 +23,7 @@ interface compositionUrl {
 	url: string
 }
 
-function App() {
-
+const App = () => {
 	const [prefectures, setPrefectures] = useState<Array<responses>>([])
 	const [compositions, setCompositions] = useState<Array<composition>>([])
 	const resasConfig = {headers: {

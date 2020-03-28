@@ -25,7 +25,7 @@ interface series {
 }
 
 const years: Array<string> = []
-function Graph({prefectures, compositions}: {prefectures: Array<responses>, compositions: Array<composition>}) {
+const Graph = ({prefectures, compositions}: {prefectures: Array<responses>, compositions: Array<composition>}) => {
 	const selectedPref = prefectures.filter((prefecture: responses) => prefecture.isSelected)
 	const series: Array<series> | any = compositions.map((composition) => {
 		const values = composition.data.map((data) => data.value)
