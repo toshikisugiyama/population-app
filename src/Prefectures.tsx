@@ -1,52 +1,59 @@
 import React from 'react'
 import './Prefectures.scss'
-import Button from './Button'
-interface responses {
+import ButtonAllSelect from './ButtonAllSelect'
+import ButtonClear from './ButtonClear'
+interface prefectures {
 	prefCode: number,
 	prefName: string,
 	isSelected: boolean
 }
-const Prefectures = ({prefectures, selectPref, setPrefectures, setCompositions}: {prefectures: Array<responses>, selectPref: any, setPrefectures: any, setCompositions: any}) => {
+const Prefectures = (
+	{
+		prefectures,
+		setPrefectures,
+	}: {
+		prefectures: Array<prefectures>,
+		setPrefectures: any,
+	}
+) => {
 	const togglePref = (event: any) => {
 		const target = event.target
-		const clickedTarget = prefectures.find((item: responses) => item.prefName === target.id)
+		const clickedTarget = prefectures.find((prefecture: prefectures) => prefecture.prefName === target.id)
 		if (clickedTarget) {
 			clickedTarget.isSelected = !clickedTarget.isSelected
 		}
-		selectPref(prefectures)
+		const toggledPrefectures = prefectures.map(prefecture => prefecture)
+		setPrefectures(toggledPrefectures)
 	}
 
 	return (
 		<div className="prefecture">
 			<h2 className="prefecture-title">都道府県を選択してください</h2>
 			<div className="prefecture-buttons">
-				<Button
-					name='all'
+				<ButtonAllSelect
 					prefectures={prefectures}
-					clickButton={selectPref}
 					setPrefectures={setPrefectures}
-					setCompositions={setCompositions}
 				/>
-				<Button
-					name='clear'
+				<ButtonClear
 					prefectures={prefectures}
-					clickButton={selectPref}
 					setPrefectures={setPrefectures}
-					setCompositions={setCompositions}
 				/>
 			</div>
 			<ul className="prefecture-list">
-				{prefectures.map((item: responses) => {
+				{prefectures.map((prefecture: prefectures) => {
 					return (
-						<li className="prefecture-list-item" key={item.prefCode}>
+						<li
+							className="prefecture-list-item"
+							key={prefecture.prefCode}
+						>
 							<label>
 								<input
 									type="checkbox"
-									checked={item.isSelected}
-									id={item.prefName}
+									checked={prefecture.isSelected}
+									id={prefecture.prefName}
 									onChange={togglePref}
 								/>
-								{item.prefName}
+								{prefecture.prefName}
 							</label>
 						</li>
 					)
