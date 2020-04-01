@@ -10,7 +10,6 @@ interface prefectures {
 }
 interface populations {
 	prefCode: number,
-	label: string,
 	data: Array<data>
 }
 interface data {
