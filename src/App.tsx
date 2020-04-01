@@ -34,14 +34,16 @@ const App = () => {
 	const prefUrl: string = 'https://opendata.resas-portal.go.jp/api/v1/prefectures'
 	const fetchPrefecture = async () => {
 		await axios.get(prefUrl, resasConfig).then(response => {
-			const prefList: Array<prefectures> = response.data.result.map((item: prefectures) => {
-				return {
-					prefCode: item.prefCode,
-					prefName: item.prefName,
-					isSelected: false
-				}
-			})
-			setPrefectures(prefList)
+			if(response.data.result) {
+				const prefList: Array<prefectures> = response.data.result.map((item: prefectures) => {
+					return {
+						prefCode: item.prefCode,
+						prefName: item.prefName,
+						isSelected: false
+					}
+				})
+				setPrefectures(prefList)
+			}
 		})
 	}
 	const fetchCompositions = async (prefectures: Array<prefectures>) => {
@@ -58,7 +60,7 @@ const App = () => {
 			await axios.get(compositionUrl.url, resasConfig).then(response => {
 				compositions.push({
 					prefCode: compositionUrl.prefCode,
-					data: response.data.result.data[0].data,
+					data: response.data.result.data[0].data
 				})
 			})
 		}
@@ -75,7 +77,23 @@ const App = () => {
 		// eslint-disable-next-line
 	}, [prefectures])
 
-
+	const Contents = () => {
+		if (prefectures.length && populations.length) {
+			return (
+				<>
+					<Prefectures
+						prefectures={prefectures}
+						setPrefectures={setPrefectures}
+					/>
+					<Graph
+						prefectures={prefectures}
+						populations={populations}
+					/>
+				</>
+			)
+		}
+		return <h2>データ取得中...</h2>
+	}
 
   return (
     <div className="App">
@@ -83,14 +101,7 @@ const App = () => {
         <h1 className="App-header-title">都道府県別人口推移</h1>
       </header>
 			<main className="App-main">
-				<Prefectures
-					prefectures={prefectures}
-					setPrefectures={setPrefectures}
-				/>
-				<Graph
-					prefectures={prefectures}
-					populations={populations}
-				/>
+				<Contents/>
 			</main>
     </div>
   )
