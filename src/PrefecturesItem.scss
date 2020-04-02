@@ -1,0 +1,8 @@
+label {
+	cursor: pointer;
+	user-select: none;
+	& > input {
+		cursor: pointer;
+		margin-right: 10px;
+	}
+}

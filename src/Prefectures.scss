@@ -24,14 +24,6 @@
 				margin-right: 0;
 				display: flex;
 			}
-			& input,
-			& label {
-				cursor: pointer;
-				user-select: none;
-			}
-			& input {
-				margin-right: 10px;
-			}
 		}
 	}
 }
