@@ -34,10 +34,6 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			transform: translate(0, -100px);
-			@media screen and (max-width: 600px) {
-				transform: translate(0, -80px);
-			}
 		}
 	}
 }
