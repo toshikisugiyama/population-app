@@ -93,19 +93,19 @@ const App = () => {
 	const ShowContents = () => {
 		if (prefectures.length && populations.length) {
 			return (
-				<>
+				<main className="App-main">
 					<Prefectures
 						prefectures={prefectures}
 						setPrefectures={setPrefectures}
 					/>
 					<ShowGraph/>
-				</>
+				</main>
 			)
 		}
 		return (
-			<div className="App-main-loading">
+			<main className="App-main-loading">
 				<h2>データ取得中...</h2>
-			</div>
+			</main>
 		)
 	}
 
@@ -114,9 +114,7 @@ const App = () => {
       <header className="App-header">
         <h1 className="App-header-title">都道府県別人口推移</h1>
       </header>
-			<main className="App-main">
-				<ShowContents/>
-			</main>
+			<ShowContents/>
     </div>
   )
 }
