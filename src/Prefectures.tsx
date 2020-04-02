@@ -1,7 +1,8 @@
 import React from 'react'
 import './Prefectures.scss'
-import ButtonAllSelect from './ButtonAllSelect'
-import ButtonClear from './ButtonClear'
+import PrefecturesButtonAllSelect from './PrefecturesButtonAllSelect'
+import PrefecturesButtonClear from './PrefecturesButtonClear'
+import PrefecturesItem from './PrefecturesItem'
 interface prefectures {
 	prefCode: number,
 	prefName: string,
@@ -30,11 +31,11 @@ const Prefectures = (
 		<div className="prefecture">
 			<h2 className="prefecture-title">都道府県を選択してください</h2>
 			<div className="prefecture-buttons">
-				<ButtonAllSelect
+				<PrefecturesButtonAllSelect
 					prefectures={prefectures}
 					setPrefectures={setPrefectures}
 				/>
-				<ButtonClear
+				<PrefecturesButtonClear
 					prefectures={prefectures}
 					setPrefectures={setPrefectures}
 				/>
@@ -46,15 +47,10 @@ const Prefectures = (
 							className="prefecture-list-item"
 							key={prefecture.prefCode}
 						>
-							<label>
-								<input
-									type="checkbox"
-									checked={prefecture.isSelected}
-									id={prefecture.prefName}
-									onChange={togglePref}
-								/>
-								{prefecture.prefName}
-							</label>
+							<PrefecturesItem
+								prefecture={prefecture}
+								togglePref={togglePref}
+							/>
 						</li>
 					)
 				})}

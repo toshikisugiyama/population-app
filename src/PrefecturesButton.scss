@@ -1,0 +1,22 @@
+button {
+	cursor: pointer;
+	color: #fff;
+	width: 100px;
+	transition: background-color .6s;
+	padding: 10px 0;
+	border: none;
+	border-radius: 5px;
+}
+button.all {
+	background-color: rgb(5, 5, 112);
+	margin-right: 15px;
+	&:hover {
+		background-color: rgb(4, 4, 243);
+	}
+}
+button.clear {
+	background-color: rgb(109, 2, 2);
+	&:hover {
+		background-color: rgb(218, 14, 14);
+	}
+}

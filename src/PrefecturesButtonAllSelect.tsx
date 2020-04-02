@@ -1,11 +1,11 @@
 import React from 'react'
-import './Button.scss'
+import './PrefecturesButton.scss'
 interface prefectures {
 	prefCode: number,
 	prefName: string,
 	isSelected: boolean
 }
-const ButtonAllSelect = (
+const PrefecturesButtonAllSelect = (
 	{
 		prefectures,
 		setPrefectures
@@ -35,4 +35,4 @@ const ButtonAllSelect = (
 	)
 }
 
-export default ButtonAllSelect
+export default PrefecturesButtonAllSelect
