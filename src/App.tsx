@@ -77,7 +77,20 @@ const App = () => {
 		// eslint-disable-next-line
 	}, [prefectures])
 
-	const Contents = () => {
+	const ShowGraph = () => {
+		const isSelected = prefectures.find((prefecture: prefectures) => prefecture.isSelected)
+		if (isSelected) {
+			return (
+				<Graph
+					prefectures={prefectures}
+					populations={populations}
+				/>
+			)
+		}
+		return <></>
+	}
+
+	const ShowContents = () => {
 		if (prefectures.length && populations.length) {
 			return (
 				<>
@@ -85,14 +98,15 @@ const App = () => {
 						prefectures={prefectures}
 						setPrefectures={setPrefectures}
 					/>
-					<Graph
-						prefectures={prefectures}
-						populations={populations}
-					/>
+					<ShowGraph/>
 				</>
 			)
 		}
-		return <h2>データ取得中...</h2>
+		return (
+			<div className="App-main-loading">
+				<h2>データ取得中...</h2>
+			</div>
+		)
 	}
 
   return (
@@ -101,7 +115,7 @@ const App = () => {
         <h1 className="App-header-title">都道府県別人口推移</h1>
       </header>
 			<main className="App-main">
-				<Contents/>
+				<ShowContents/>
 			</main>
     </div>
   )
