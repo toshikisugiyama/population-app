@@ -13,7 +13,7 @@
     "axios": "^0.19.2",
     "highcharts": "^8.0.4",
     "highcharts-react-official": "^3.0.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
